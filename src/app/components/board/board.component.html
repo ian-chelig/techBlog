@@ -1,0 +1,5 @@
+<div *ngIf="items" class="board-container">
+  <li *ngFor="let item of items.blogPosts.data">
+    {{ item.attributes.Content }}
+  </li>
+</div>

@@ -6,10 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
+import { BoardComponent } from './components/board/board.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BoardComponent
   ],
   imports: [
     BrowserModule,
