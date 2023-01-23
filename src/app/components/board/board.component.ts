@@ -2,6 +2,7 @@ import { Apollo } from 'apollo-angular';
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { gql } from 'graphql-tag';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-board',
@@ -11,13 +12,14 @@ import { gql } from 'graphql-tag';
 export class BoardComponent {
   public items: any;
   private queryBlogPosts: Subscription;
-  constructor(private apollo : Apollo) { 
+  public content: Array<SafeHtml> = [];
+  constructor(private apollo : Apollo, private sanitizer: DomSanitizer) { 
     this.queryBlogPosts = this.apollo.watchQuery({
       query: gql`
         query BlogPosts {
           blogPosts {
-          data {
-            id 
+          data { 
+          id 
             attributes {
               Content
               Highlight {
@@ -36,7 +38,9 @@ export class BoardComponent {
     })
     .valueChanges.subscribe(result => {
         this.items = result.data;
-        console.log(result);
+        this.content = this.items.blogPosts.data.map(v => {
+          return this.sanitizer.bypassSecurityTrustHtml(v.attributes.Content);
+        })
       })
   }
   ngOnInit() {
